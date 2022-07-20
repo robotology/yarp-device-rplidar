@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-#include "rpLidar3.h"
+#include "rpLidar4.h"
 
 #include <yarp/os/Time.h>
 #include <yarp/os/Log.h>
@@ -30,19 +30,19 @@
 
 using namespace rp::standalone::rplidar;
 
-YARP_LOG_COMPONENT(RP_LIDAR3, "yarp.devices.RpLidar3")
+YARP_LOG_COMPONENT(RP_LIDAR4, "yarp.devices.RpLidar4")
 
 //-------------------------------------------------------------------------------------
-bool RpLidar3::startMotor()
+bool RpLidar4::startMotor()
 {
     u_result result = m_drv->startMotor();
     if (result != RESULT_OK)
     {
         handleError(result);
-        yCError(RP_LIDAR3) << "Unable to start motor";
+        yCError(RP_LIDAR4) << "Unable to start motor";
         return false;
     }
-    yCInfo(RP_LIDAR3) << "Motor started successfully";
+    yCInfo(RP_LIDAR4) << "Motor started successfully";
 
     if (m_pwm_val > 0 && m_pwm_val < 1023)
     {
@@ -50,29 +50,29 @@ bool RpLidar3::startMotor()
         if (result != RESULT_OK)
         {
             handleError(result);
-            yCError(RP_LIDAR3) << "Unable to setMotorPWM";
+            yCError(RP_LIDAR4) << "Unable to setMotorPWM";
             return false;
         }
-        yCInfo(RP_LIDAR3) << "Motor pwm set to " << m_pwm_val;
+        yCInfo(RP_LIDAR4) << "Motor pwm set to " << m_pwm_val;
     }
     else
     {
-        yCError(RP_LIDAR3) << "Invalid motor pwm request " << m_pwm_val << ". It should be a value between 0 and 1023.";
+        yCError(RP_LIDAR4) << "Invalid motor pwm request " << m_pwm_val << ". It should be a value between 0 and 1023.";
         return false;
     }
 
     return true;
 }
 
-bool RpLidar3::startScan()
+bool RpLidar4::startScan()
 {
     RplidarScanMode current_scan_mode;
     std::vector<RplidarScanMode> scanModes;
     u_result op_result = m_drv->getAllSupportedScanModes(scanModes);
-    yCInfo(RP_LIDAR3) << "List of Scan Modes";
+    yCInfo(RP_LIDAR4) << "List of Scan Modes";
     for (size_t i = 0; i < scanModes.size(); i++)
     {
-        yCInfo(RP_LIDAR3) << "id:" << scanModes[i].id
+        yCInfo(RP_LIDAR4) << "id:" << scanModes[i].id
             << ", mode:" << scanModes[i].scan_mode
             << ", max distance:" << scanModes[i].max_distance
             << ", us per sample:" << scanModes[i].us_per_sample
@@ -95,10 +95,10 @@ bool RpLidar3::startScan()
 
         if (selectedScanMode == _u16(-1))
         {
-            yCInfo(RP_LIDAR3, "scan mode `%s' is not supported by lidar, supported modes:", m_scan_mode.c_str());
+            yCInfo(RP_LIDAR4, "scan mode `%s' is not supported by lidar, supported modes:", m_scan_mode.c_str());
             for (std::vector<RplidarScanMode>::iterator iter = scanModes.begin(); iter != scanModes.end(); iter++)
             {
-                yCInfo(RP_LIDAR3, "\t%s: max_distance: %.1f m, Point number: %.1fK", iter->scan_mode, iter->max_distance, (1000 / iter->us_per_sample));
+                yCInfo(RP_LIDAR4, "\t%s: max_distance: %.1f m, Point number: %.1fK", iter->scan_mode, iter->max_distance, (1000 / iter->us_per_sample));
             }
             op_result = RESULT_OPERATION_FAIL;
         }
@@ -114,11 +114,11 @@ bool RpLidar3::startScan()
         return false;
     }
 
-    yCInfo(RP_LIDAR3) << "Scan started successfully";
+    yCInfo(RP_LIDAR4) << "Scan started successfully";
     return true;
 }
 
-bool RpLidar3::open(yarp::os::Searchable& config)
+bool RpLidar4::open(yarp::os::Searchable& config)
 {
     std::string   serial;
     int      baudrate;
@@ -128,7 +128,7 @@ bool RpLidar3::open(yarp::os::Searchable& config)
     //parse all the parameters related to the linear/angular range of the sensor
     if (this->parseConfiguration(config) == false)
     {
-        yCError(RP_LIDAR3) << ": error parsing parameters";
+        yCError(RP_LIDAR4) << ": error parsing parameters";
         return false;
     }
 
@@ -138,9 +138,9 @@ bool RpLidar3::open(yarp::os::Searchable& config)
         //general options
         {
             yarp::os::Searchable& general_config = config.findGroup("GENERAL");
-            if (general_config.check("serial_port") == false)         { yCError(RP_LIDAR3)  << "Missing serial_port param in GENERAL group"; return false; }
-            if (general_config.check("serial_baudrate") == false)     { yCError(RP_LIDAR3)  << "Missing serial_baudrate param in GENERAL group"; return false; }
-            if (general_config.check("sample_buffer_life") == false)  { yCError(RP_LIDAR3)  << "Missing sample_buffer_life param in GENERAL group"; return false; }
+            if (general_config.check("serial_port") == false)         { yCError(RP_LIDAR4)  << "Missing serial_port param in GENERAL group"; return false; }
+            if (general_config.check("serial_baudrate") == false)     { yCError(RP_LIDAR4)  << "Missing serial_baudrate param in GENERAL group"; return false; }
+            if (general_config.check("sample_buffer_life") == false)  { yCError(RP_LIDAR4)  << "Missing sample_buffer_life param in GENERAL group"; return false; }
             if (general_config.check("thread_period"))
             {
                 double thread_period = general_config.find("thread_period").asInt32() / 1000.0;
@@ -175,20 +175,20 @@ bool RpLidar3::open(yarp::os::Searchable& config)
     }
     else
     {
-        yCError(RP_LIDAR3) << "Missing GENERAL section";
+        yCError(RP_LIDAR4) << "Missing GENERAL section";
         return false;
     }
 
-    m_drv = RPlidarDriver::CreateDriver(rp::standalone::rplidar::DRIVER_TYPE_SERIALPORT);
+    m_drv = RPlidarDriver::CreateDriver(rp::standalone::rplidar::CHANNEL_TYPE_SERIALPORT);
     if (!m_drv)
     {
-            yCError(RP_LIDAR3) << "Create Driver fail, exit\n";
+            yCError(RP_LIDAR4) << "Create Driver fail, exit\n";
             return false;
     }
 
     if (IS_FAIL(m_drv->connect(m_serialPort.c_str(), (_u32)baudrate)))
     {
-        yCError(RP_LIDAR3) << "Error, cannot bind to the specified serial port:", m_serialPort.c_str();
+        yCError(RP_LIDAR4) << "Error, cannot bind to the specified serial port:", m_serialPort.c_str();
         RPlidarDriver::DisposeDriver(m_drv);
         return false;
     }
@@ -197,28 +197,28 @@ bool RpLidar3::open(yarp::os::Searchable& config)
     if (!startMotor()) return false;
     if (!startScan()) return false;
 
-    yCInfo(RP_LIDAR3) << "Device info:" << m_info;
-    yCInfo(RP_LIDAR3,"max_dist %f, min_dist %f",   m_max_distance, m_min_distance);
-    yCInfo(RP_LIDAR3,"max_angle %f, min_angle %f", m_max_angle, m_min_angle);
-    yCInfo(RP_LIDAR3,"resolution %f",              m_resolution);
-    yCInfo(RP_LIDAR3,"sensors %zu",                m_sensorsNum);
+    yCInfo(RP_LIDAR4) << "Device info:" << m_info;
+    yCInfo(RP_LIDAR4,"max_dist %f, min_dist %f",   m_max_distance, m_min_distance);
+    yCInfo(RP_LIDAR4,"max_angle %f, min_angle %f", m_max_angle, m_min_angle);
+    yCInfo(RP_LIDAR4,"resolution %f",              m_resolution);
+    yCInfo(RP_LIDAR4,"sensors %zu",                m_sensorsNum);
     PeriodicThread::start();
     return true;
 }
 
-bool RpLidar3::close()
+bool RpLidar4::close()
 {
-    yCDebug(RP_LIDAR3) << "closing..";
+    yCDebug(RP_LIDAR4) << "closing..";
     PeriodicThread::stop();
 
     m_drv->stopMotor();
     m_drv->stop();
     RPlidarDriver::DisposeDriver(m_drv);
-    yCInfo(RP_LIDAR3) << "rpLidar closed";
+    yCInfo(RP_LIDAR4) << "rpLidar closed";
     return true;
 }
 
-bool RpLidar3::setDistanceRange(double min, double max)
+bool RpLidar4::setDistanceRange(double min, double max)
 {
     std::lock_guard<std::mutex> guard(m_mutex);
     m_min_distance = min;
@@ -226,7 +226,7 @@ bool RpLidar3::setDistanceRange(double min, double max)
     return true;
 }
 
-bool RpLidar3::setScanLimits(double min, double max)
+bool RpLidar4::setScanLimits(double min, double max)
 {
     std::lock_guard<std::mutex> guard(m_mutex);
     m_min_angle = min;
@@ -234,21 +234,21 @@ bool RpLidar3::setScanLimits(double min, double max)
     return true;
 }
 
-bool RpLidar3::setHorizontalResolution(double step)
+bool RpLidar4::setHorizontalResolution(double step)
 {
     std::lock_guard<std::mutex> guard(m_mutex);
     m_resolution = step;
     return true;
 }
 
-bool RpLidar3::setScanRate(double rate)
+bool RpLidar4::setScanRate(double rate)
 {
     std::lock_guard<std::mutex> guard(m_mutex);
-    yCWarning(RP_LIDAR3, "setScanRate not yet implemented");
+    yCWarning(RP_LIDAR4, "setScanRate not yet implemented");
     return false;
 }
 
-bool RpLidar3::threadInit()
+bool RpLidar4::threadInit()
 {
     return true;
 }
@@ -258,7 +258,7 @@ bool RpLidar3::threadInit()
 #define _countof(_Array) (int)(sizeof(_Array) / sizeof (_Array[0]))
 #endif
 
-void RpLidar3::run()
+void RpLidar4::run()
 {
     bool b = updateLidarData();
     if (b)
@@ -267,12 +267,12 @@ void RpLidar3::run()
     }
     else
     {
-        yCWarning(RP_LIDAR3, "updateLidarData() failed.");
+        yCWarning(RP_LIDAR4, "updateLidarData() failed.");
     }
     return;
 }
 
-bool RpLidar3::acquireDataFromHW()
+bool RpLidar4::acquireDataFromHW()
 {
     u_result                            op_result;
     size_t                              count = m_nodes_num;
@@ -280,7 +280,7 @@ bool RpLidar3::acquireDataFromHW()
     op_result = m_drv->grabScanDataHq(m_nodes, count);
     if (op_result != RESULT_OK)
     {
-        yCError(RP_LIDAR3) << m_serialPort << ": grabbing scan data failed";
+        yCError(RP_LIDAR4) << m_serialPort << ": grabbing scan data failed";
         handleError(op_result);
         return false;
     }
@@ -289,7 +289,7 @@ bool RpLidar3::acquireDataFromHW()
 
     if (op_result != RESULT_OK)
     {
-        yCError(RP_LIDAR3) << "ascending scan data failed\n";
+        yCError(RP_LIDAR4) << "ascending scan data failed\n";
         handleError(op_result);
         return false;
     }
@@ -323,7 +323,7 @@ bool RpLidar3::acquireDataFromHW()
         //checkme, is it useful?
         if (angle > 360)
         {
-            yCWarning(RP_LIDAR3) << "Invalid angle";
+            yCWarning(RP_LIDAR4) << "Invalid angle";
         }
 
         if (quality == 0 || distance == 0)
@@ -338,7 +338,7 @@ bool RpLidar3::acquireDataFromHW()
         }
         else
         {
-            yCDebug(RP_LIDAR3) << "RpLidar::run() invalid angle: elem" << elem << ">" << "laser_data.size()" << m_laser_data.size();
+            yCDebug(RP_LIDAR4) << "RpLidar::run() invalid angle: elem" << elem << ">" << "laser_data.size()" << m_laser_data.size();
         }
     }
 
@@ -346,51 +346,51 @@ bool RpLidar3::acquireDataFromHW()
     return true;
 }
 
-void RpLidar3::threadRelease()
+void RpLidar4::threadRelease()
 {
 #ifdef LASER_DEBUG
-    yCDebug(RP_LIDAR3,"RpLidar Thread releasing...");
-    yCDebug(RP_LIDAR3,"... done.");
+    yCDebug(RP_LIDAR4,"RpLidar Thread releasing...");
+    yCDebug(RP_LIDAR4,"... done.");
 #endif
 
     return;
 }
 
-void RpLidar3::handleError(u_result error)
+void RpLidar4::handleError(u_result error)
 {
     switch (error)
     {
     case RESULT_FAIL_BIT:
-        yCError(RP_LIDAR3) << "error: 'FAIL BIT'";
+        yCError(RP_LIDAR4) << "error: 'FAIL BIT'";
         break;
     case RESULT_ALREADY_DONE:
-        yCError(RP_LIDAR3) << "error: 'ALREADY DONE'";
+        yCError(RP_LIDAR4) << "error: 'ALREADY DONE'";
         break;
     case RESULT_INVALID_DATA:
-        yCError(RP_LIDAR3) << "error: 'INVALID DATA'";
+        yCError(RP_LIDAR4) << "error: 'INVALID DATA'";
         break;
     case RESULT_OPERATION_FAIL:
-        yCError(RP_LIDAR3) << "error: 'OPERATION FAIL'";
+        yCError(RP_LIDAR4) << "error: 'OPERATION FAIL'";
         break;
     case RESULT_OPERATION_TIMEOUT:
-        yCError(RP_LIDAR3) << "error: 'OPERATION TIMEOUT'";
+        yCError(RP_LIDAR4) << "error: 'OPERATION TIMEOUT'";
         break;
     case RESULT_OPERATION_STOP:
-        yCError(RP_LIDAR3) << "error: 'OPERATION STOP'";
+        yCError(RP_LIDAR4) << "error: 'OPERATION STOP'";
         break;
     case RESULT_OPERATION_NOT_SUPPORT:
-        yCError(RP_LIDAR3) << "error: 'OPERATION NOT SUPPORT'";
+        yCError(RP_LIDAR4) << "error: 'OPERATION NOT SUPPORT'";
         break;
     case RESULT_FORMAT_NOT_SUPPORT:
-        yCError(RP_LIDAR3) << "error: 'FORMAT NOT SUPPORT'";
+        yCError(RP_LIDAR4) << "error: 'FORMAT NOT SUPPORT'";
         break;
     case RESULT_INSUFFICIENT_MEMORY:
-        yCError(RP_LIDAR3) << "error: 'INSUFFICENT MEMORY'";
+        yCError(RP_LIDAR4) << "error: 'INSUFFICENT MEMORY'";
         break;
     }
 }
 
-bool RpLidar3::deviceinfo()
+bool RpLidar4::deviceinfo()
 {
     if (m_drv)
     {
@@ -402,7 +402,7 @@ bool RpLidar3::deviceinfo()
         if (result != RESULT_OK)
         {
             handleError(result);
-            yCError(RP_LIDAR3) << "Unable to getDeviceInfo";
+            yCError(RP_LIDAR4) << "Unable to getDeviceInfo";
             return false;
         }
 
@@ -417,6 +417,6 @@ bool RpLidar3::deviceinfo()
                  "\nSerial Number:"     + serialNumber;
         return true;
     }
-    yCError(RP_LIDAR3) << "sdk driver not initialized?!";
+    yCError(RP_LIDAR4) << "sdk driver not initialized?!";
     return false;
 }

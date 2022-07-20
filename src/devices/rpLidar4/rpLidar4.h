@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-#ifndef RPLIDAR3_H
-#define RPLIDAR3_H
+#ifndef RPLIDAR4_H
+#define RPLIDAR4_H
 
 
 #include <yarp/os/PeriodicThread.h>
@@ -31,7 +31,7 @@ typedef unsigned char byte;
 /**
  *  @ingroup dev_impl_lidar
  *
- * \brief `rpLidar3`: The device driver for the RP2 lidar
+ * \brief `rpLidar4`: The device driver for the RP lidar S2
  *
  *  Parameters required by this device are:
  * | Parameter name | SubParameter    | Type    | Units          | Default Value | Required     | Description                                                       | Notes |
@@ -46,7 +46,7 @@ typedef unsigned char byte;
  * | RPLIDAR        | scan_mode       | string  |                | Boost         | No           | Check sensor datasheet  |  |
  */
 
-class RpLidar3 : public PeriodicThread, public yarp::dev::Lidar2DDeviceBase, public DeviceDriver
+class RpLidar4 : public PeriodicThread, public yarp::dev::Lidar2DDeviceBase, public DeviceDriver
 {
     typedef rp::standalone::rplidar::RPlidarDriver rplidardrv;
 
@@ -64,12 +64,12 @@ protected:
     rplidar_response_measurement_node_hq_t* m_nodes = nullptr;
 
 public:
-    RpLidar3(double period = 0) : PeriodicThread(period) //period=0 allows to run the thread as fast as possible, but it is not a busy loop since yield() is called internally
+    RpLidar4(double period = 0) : PeriodicThread(period) //period=0 allows to run the thread as fast as possible, but it is not a busy loop since yield() is called internally
     {
         m_nodes = new rplidar_response_measurement_node_hq_t[m_nodes_num];
     }
 
-    ~RpLidar3()
+    ~RpLidar4()
     {
         delete [] m_nodes;
     }

@@ -7,3 +7,4 @@
 add_subdirectory(rpLidar)
 add_subdirectory(rpLidar2)
 add_subdirectory(rpLidar3)
+add_subdirectory(rpLidar4)

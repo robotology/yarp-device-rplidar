@@ -21,11 +21,11 @@ if(NOT SKIP_rpLidar2)
   endif()
 
   set(RPLIDAR_SDK_SRCS
-    ${RPLIDAR_SDK_ROOT}/src/rplidar_driver.cpp
-    ${RPLIDAR_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/net_serial.cpp
-    ${RPLIDAR_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/net_socket.cpp
-    ${RPLIDAR_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/timer.cpp
-    ${RPLIDAR_SDK_ROOT}/src/hal/thread.cpp
+    ${RPLIDAR_12_SDK_ROOT}/src/rplidar_driver.cpp
+    ${RPLIDAR_12_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/net_serial.cpp
+    ${RPLIDAR_12_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/net_socket.cpp
+    ${RPLIDAR_12_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/timer.cpp
+    ${RPLIDAR_12_SDK_ROOT}/src/hal/thread.cpp
   )
 
   add_library(rpLidar2_sdk OBJECT)
@@ -33,8 +33,8 @@ if(NOT SKIP_rpLidar2)
   target_compile_options(rpLidar2_sdk PRIVATE -w)
   target_include_directories(rpLidar2_sdk
     SYSTEM PUBLIC
-      ${RPLIDAR_SDK_ROOT}/include
-      ${RPLIDAR_SDK_ROOT}/src
+      ${RPLIDAR_12_SDK_ROOT}/include
+      ${RPLIDAR_12_SDK_ROOT}/src
   )
 
   # Build YARP rpLidar2 device

@@ -9,7 +9,7 @@ yarp_prepare_plugin(rpLidar3
   DEFAULT ON)
 
 if(NOT SKIP_rpLidar3)
-  # Build rpLidar SDK
+  # Build rpLidar3 SDK
   if(WIN32)
     set(RPLIDAR_ARCH_DIR win32)
   elseif(APPLE)
@@ -21,20 +21,20 @@ if(NOT SKIP_rpLidar3)
   endif()
 
   set(RPLIDAR_SDK_SRCS
-    ${RPLIDAR_SDK_ROOT}/src/rplidar_driver.cpp
-    ${RPLIDAR_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/net_serial.cpp
-    ${RPLIDAR_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/net_socket.cpp
-    ${RPLIDAR_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/timer.cpp
-    ${RPLIDAR_SDK_ROOT}/src/hal/thread.cpp
+    ${RPLIDAR_12_SDK_ROOT}/src/rplidar_driver.cpp
+    ${RPLIDAR_12_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/net_serial.cpp
+    ${RPLIDAR_12_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/net_socket.cpp
+    ${RPLIDAR_12_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/timer.cpp
+    ${RPLIDAR_12_SDK_ROOT}/src/hal/thread.cpp
   )
 
-  add_library(rpLidar_sdk OBJECT)
-  target_sources(rpLidar_sdk PRIVATE ${RPLIDAR_SDK_SRCS})
-  target_compile_options(rpLidar_sdk PRIVATE -w)
-  target_include_directories(rpLidar_sdk
+  add_library(rpLidar3_sdk OBJECT)
+  target_sources(rpLidar3_sdk PRIVATE ${RPLIDAR_SDK_SRCS})
+  target_compile_options(rpLidar3_sdk PRIVATE -w)
+  target_include_directories(rpLidar3_sdk
     SYSTEM PUBLIC
-      ${RPLIDAR_SDK_ROOT}/include
-      ${RPLIDAR_SDK_ROOT}/src
+      ${RPLIDAR_12_SDK_ROOT}/include
+      ${RPLIDAR_12_SDK_ROOT}/src
   )
 
   # Build YARP rpLidar3 device
@@ -47,8 +47,8 @@ if(NOT SKIP_rpLidar3)
   )
   target_compile_definitions(yarp_rpLidar3 PRIVATE _USE_MATH_DEFINES)
 
-  target_sources(yarp_rpLidar3 PRIVATE $<TARGET_OBJECTS:rpLidar_sdk>)
-  target_include_directories(yarp_rpLidar3 SYSTEM PRIVATE $<TARGET_PROPERTY:rpLidar_sdk,INTERFACE_INCLUDE_DIRECTORIES>)
+  target_sources(yarp_rpLidar3 PRIVATE $<TARGET_OBJECTS:rpLidar3_sdk>)
+  target_include_directories(yarp_rpLidar3 SYSTEM PRIVATE $<TARGET_PROPERTY:rpLidar3_sdk,INTERFACE_INCLUDE_DIRECTORIES>)
 
   target_link_libraries(yarp_rpLidar3
     PRIVATE
