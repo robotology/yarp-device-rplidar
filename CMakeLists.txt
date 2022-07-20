@@ -4,14 +4,14 @@
 # This software may be modified and distributed under the terms of the
 # BSD-3-Clause license. See the accompanying LICENSE file for details.
 
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.16)
 project(yarp-device-rpLidar
         LANGUAGES CXX
         VERSION 0.1.0)
 
 include(FeatureSummary)
 
-find_package(YCM 0.11 REQUIRED)
+find_package(YCM 0.12 REQUIRED)
 
 include(GNUInstallDirs)
 
@@ -50,7 +50,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS 1)
 
 include(AddUninstallTarget)
 
-find_package(YARP 3.7 COMPONENTS os sig dev OPTIONAL_COMPONENTS math REQUIRED)
+find_package(YARP 3.7.2 COMPONENTS os sig dev OPTIONAL_COMPONENTS math REQUIRED)
 set(CMAKE_C_FLAGS "${YARP_C_FLAGS} ${CMAKE_C_FLAGS}")
 set(CMAKE_CXX_FLAGS "${YARP_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")
 
