@@ -1,5 +1,4 @@
-![YARP logo](https://raw.githubusercontent.com/robotology/yarp/master/doc/images/yarp-robot-24.png "yarp-device-rplidar")
-yarp-device-rplidar
+yarp-device-rplidar ![YARP logo](https://raw.githubusercontent.com/robotology/yarp/master/doc/images/yarp-robot-24.png "yarp-device-rplidar")
 ======================
 
 This repository contains the [YARP](https://www.yarp.it/) device drivers for Slamtec rpLidar sensors.
