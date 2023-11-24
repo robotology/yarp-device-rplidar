@@ -211,7 +211,7 @@ public:
         clip_max_enable(false),
         clip_min_enable(false),
         do_not_clip_infinity_enable(false),
-        device_status(Device_status::DEVICE_OK_STANBY)
+        device_status(Device_status::DEVICE_OK_STANDBY)
     {
         buffer = new rpLidarCircularBuffer(20000);
     }

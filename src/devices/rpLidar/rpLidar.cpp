@@ -47,7 +47,7 @@ rpLidarCircularBuffer::~rpLidarCircularBuffer()
 bool RpLidar::open(yarp::os::Searchable& config)
 {
     info = "Fake Laser device for test/debugging";
-    device_status = DEVICE_OK_STANBY;
+    device_status = DEVICE_OK_STANDBY;
 
 #ifdef LASER_DEBUG
     yCDebug(RPLIDAR, "%s\n", config.toString().c_str());

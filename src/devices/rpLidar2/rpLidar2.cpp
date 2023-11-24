@@ -40,7 +40,7 @@ bool RpLidar2::open(yarp::os::Searchable& config)
     int      baudrate;
     u_result result;
 
-    m_device_status = DEVICE_OK_STANBY;
+    m_device_status = DEVICE_OK_STANDBY;
     m_min_distance  = 0.1; //m
     m_max_distance  = 5;  //m
     m_pwm_val       = 0;

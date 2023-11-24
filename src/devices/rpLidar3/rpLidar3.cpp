@@ -123,7 +123,7 @@ bool RpLidar3::open(yarp::os::Searchable& config)
     std::string   serial;
     int      baudrate;
 
-    m_device_status = DEVICE_OK_STANBY;
+    m_device_status = DEVICE_OK_STANDBY;
 
     //parse all the parameters related to the linear/angular range of the sensor
     if (this->parseConfiguration(config) == false)
