@@ -275,7 +275,7 @@ bool RpLidar::getRawData(yarp::sig::Vector &out, double* timestamp)
     return true;
 }
 
-bool RpLidar::getLaserMeasurement(std::vector<LaserMeasurementData> &data, double* timestamp)
+bool RpLidar::getLaserMeasurement(std::vector<yarp::sig::LaserMeasurementData> &data, double* timestamp)
 {
     std::lock_guard<std::mutex> guard(mutex);
 #ifdef LASER_DEBUG
