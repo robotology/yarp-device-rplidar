@@ -21,17 +21,17 @@ if(NOT SKIP_rpLidar4)
   endif()
 
   set(RPLIDAR_SDK_SRCS
-    ${RPLIDAR_20_SDK_ROOT}/src/rplidar_driver.cpp
-    ${RPLIDAR_20_SDK_ROOT}/src/sl_lidar_driver.cpp
-    ${RPLIDAR_20_SDK_ROOT}/src/sl_serial_channel.cpp
-    ${RPLIDAR_20_SDK_ROOT}/src/sl_tcp_channel.cpp
-    ${RPLIDAR_20_SDK_ROOT}/src/sl_udp_channel.cpp
-    ${RPLIDAR_20_SDK_ROOT}/src/sl_crc.cpp
+    ${RPLIDAR_21_SDK_ROOT}/src/rplidar_driver.cpp
+    ${RPLIDAR_21_SDK_ROOT}/src/sl_lidar_driver.cpp
+    ${RPLIDAR_21_SDK_ROOT}/src/sl_serial_channel.cpp
+    ${RPLIDAR_21_SDK_ROOT}/src/sl_tcp_channel.cpp
+    ${RPLIDAR_21_SDK_ROOT}/src/sl_udp_channel.cpp
+    ${RPLIDAR_21_SDK_ROOT}/src/sl_crc.cpp
 
-    ${RPLIDAR_20_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/net_serial.cpp
-    ${RPLIDAR_20_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/net_socket.cpp
-    ${RPLIDAR_20_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/timer.cpp
-    ${RPLIDAR_20_SDK_ROOT}/src/hal/thread.cpp
+    ${RPLIDAR_21_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/net_serial.cpp
+    ${RPLIDAR_21_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/net_socket.cpp
+    ${RPLIDAR_21_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/timer.cpp
+    ${RPLIDAR_21_SDK_ROOT}/src/hal/thread.cpp
   )
 
   add_library(rpLidar4_sdk OBJECT)
@@ -39,8 +39,8 @@ if(NOT SKIP_rpLidar4)
   target_compile_options(rpLidar4_sdk PRIVATE -w)
   target_include_directories(rpLidar4_sdk
     SYSTEM PUBLIC
-      ${RPLIDAR_20_SDK_ROOT}/include
-      ${RPLIDAR_20_SDK_ROOT}/src
+      ${RPLIDAR_21_SDK_ROOT}/include
+      ${RPLIDAR_21_SDK_ROOT}/src
   )
 
   # Build YARP rpLidar4 device
