@@ -3,15 +3,15 @@
 
 <robot name="R1SN003" build="1" portprefix="cer" xmlns:xi="http://www.w3.org/2001/XInclude">
 <devices>
- 
-    <device xmlns:xi="http://www.w3.org/2001/XInclude" name="laser_device" type="rpLidar4">  
+
+    <device xmlns:xi="http://www.w3.org/2001/XInclude" name="laser_device" type="rpLidar4">
        <group name="GENERAL">
             <param name="name">            rpLidar4     </param>
             <param name="serial_baudrate"> 1000000      </param>
             <param name="serial_port">     /dev/ttyUSB0 </param>
             <param name="sample_buffer_life">  1        </param>
        </group>
-       <group name="SENSOR">    
+       <group name="SENSOR">
             <param name="max_distance">    30.0         </param>
             <param name="min_distance">    0.1          </param>
             <param name="max_angle">       360          </param>
@@ -21,9 +21,9 @@
         </group>
         <group name="RPLIDAR">
             <param name="scan_mode">  DenseBoost        </param>
-        </group> 
+        </group>
     </device>
-    
+
 
     <device xmlns:xi="http://www.w3.org/2001/XInclude" name="laser_wrapper_yarp" type="rangefinder2D_nws_yarp">
         <param name="period"> 0.01 </param>
@@ -35,7 +35,7 @@
         </action>
       <action phase="shutdown" level="15" type="detach" />
     </device>
-    
+
     <!--<device xmlns:xi="http://www.w3.org/2001/XInclude" name="laser_wrapper_ros" type="rangefinder2D_nws_ros">
         <param name="period"> 0.01 </param>
         <param name ="node_name"> /cer-laser </param>
@@ -48,7 +48,7 @@
         </action>
         <action phase="shutdown" level="15" type="detach" />
     </device> -->
-  
+
     <!--<device xmlns:xi="http://www.w3.org/2001/XInclude" name="laser_wrapper_ros" type="rangefinder2D_nws_ros2">
         <param name="period"> 0.01 </param>
         <param name ="node_name"> /cer-laser </param>
@@ -61,6 +61,6 @@
         </action>
         <action phase="shutdown" level="15" type="detach" />
     </device> -->
-    
+
 </devices>
-</robot> 
+</robot>
