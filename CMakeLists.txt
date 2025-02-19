@@ -1,8 +1,5 @@
-# Copyright (C) 2006-2020 Istituto Italiano di Tecnologia (IIT)
-# All rights reserved.
-#
-# This software may be modified and distributed under the terms of the
-# BSD-3-Clause license. See the accompanying LICENSE file for details.
+# SPDX-FileCopyrightText: 2024 Istituto Italiano di Tecnologia (IIT)
+# SPDX-License-Identifier: BSD-3-Clause
 
 cmake_minimum_required(VERSION 3.17)
 project(yarp-device-rpLidar
@@ -31,7 +28,23 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 set(YARP_FORCE_DYNAMIC_PLUGINS TRUE CACHE INTERNAL "yarp-device-rpLidar is always built with dynamic plugins")
-set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "Build libraries as shared as opposed to static")
+set(BUILD_SHARED_LIBS "Build libraries as shared as opposed to static" ON)
+
+find_package(YARP 3.10.0 COMPONENTS os sig dev serversql OPTIONAL_COMPONENTS math REQUIRED)
+find_package(YARP 3.10.0 COMPONENTS catch2 dev_tests QUIET)
+
+if(YARP_catch2_FOUND AND YARP_dev_tests_FOUND)
+  option(YARP_COMPILE_TESTS "Enable YARP tests" OFF)
+  if(YARP_COMPILE_TESTS)
+    enable_testing()
+  endif()
+  message (STATUS "yarp_catch2 and yarp_dev_tests libraries found")
+else()
+  SET(YARP_COMPILE_TESTS OFF CACHE BOOL "yarp_catch2 and yarp_dev_tests libraries NOT found. Tests cannot be enabled" FORCE)
+  message (STATUS "yarp_catch2 and yarp_dev_tests libraries NOT found. Tests cannot be enabled")
+endif()
+
+include(YarpValgrindOptions)
 
 include(AddInstallRPATHSupport)
 add_install_rpath_support(BIN_DIRS "${CMAKE_INSTALL_FULL_BINDIR}"
@@ -50,13 +63,14 @@ set_property(GLOBAL PROPERTY USE_FOLDERS 1)
 
 include(AddUninstallTarget)
 
-find_package(YARP 3.10.0 COMPONENTS os sig dev OPTIONAL_COMPONENTS math REQUIRED)
 set(CMAKE_C_FLAGS "${YARP_C_FLAGS} ${CMAKE_C_FLAGS}")
 set(CMAKE_CXX_FLAGS "${YARP_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")
 
 yarp_configure_plugins_installation(yarp-device-rpLidar)
+find_package(Doxygen)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES)
 
 add_subdirectory(extern)
 add_subdirectory(src)
+add_subdirectory(tests)

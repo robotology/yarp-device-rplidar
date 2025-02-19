@@ -1,0 +1,3 @@
+./src/devices/rpLidar
+./src/devices/rpLidar2
+./src/devices/rpLidar3
