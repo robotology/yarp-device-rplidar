@@ -29,6 +29,7 @@
 //#define FORCE_SCAN
 
 using namespace rp::standalone::rplidar;
+using namespace yarp::dev;
 
 YARP_LOG_COMPONENT(RP_LIDAR3, "yarp.devices.RpLidar3")
 
@@ -218,34 +219,34 @@ bool RpLidar3::close()
     return true;
 }
 
-bool RpLidar3::setDistanceRange(double min, double max)
+ReturnValue RpLidar3::setDistanceRange(double min, double max)
 {
     std::lock_guard<std::mutex> guard(m_mutex);
     m_min_distance = min;
     m_max_distance = max;
-    return true;
+    return ReturnValue_ok;
 }
 
-bool RpLidar3::setScanLimits(double min, double max)
+ReturnValue RpLidar3::setScanLimits(double min, double max)
 {
     std::lock_guard<std::mutex> guard(m_mutex);
     m_min_angle = min;
     m_max_angle = max;
-    return true;
+    return ReturnValue_ok;
 }
 
-bool RpLidar3::setHorizontalResolution(double step)
+ReturnValue RpLidar3::setHorizontalResolution(double step)
 {
     std::lock_guard<std::mutex> guard(m_mutex);
     m_resolution = step;
-    return true;
+    return ReturnValue_ok;
 }
 
-bool RpLidar3::setScanRate(double rate)
+ReturnValue RpLidar3::setScanRate(double rate)
 {
     std::lock_guard<std::mutex> guard(m_mutex);
     yCWarning(RP_LIDAR3, "setScanRate not yet implemented");
-    return false;
+    return ReturnValue::return_code::return_value_error_not_implemented_by_device;
 }
 
 bool RpLidar3::threadInit()

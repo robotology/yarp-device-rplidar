@@ -29,6 +29,8 @@
 
 YARP_LOG_COMPONENT(RPLIDAR, "yarp.device.rpLidar")
 
+using namespace yarp::dev;
+
 rpLidarCircularBuffer::rpLidarCircularBuffer(int bufferSize)
 {
     maxsize = bufferSize + 1;
@@ -206,76 +208,76 @@ bool RpLidar::close()
     return true;
 }
 
-bool RpLidar::getDistanceRange(double& min, double& max)
+ReturnValue RpLidar::getDistanceRange(double& min, double& max)
 {
     std::lock_guard<std::mutex> guard(mutex);
     min = min_distance;
     max = max_distance;
-    return true;
+    return ReturnValue_ok;
 }
 
-bool RpLidar::setDistanceRange(double min, double max)
+ReturnValue RpLidar::setDistanceRange(double min, double max)
 {
     std::lock_guard<std::mutex> guard(mutex);
     min_distance = min;
     max_distance = max;
-    return true;
+    return ReturnValue_ok;
 }
 
-bool RpLidar::getScanLimits(double& min, double& max)
+ReturnValue RpLidar::getScanLimits(double& min, double& max)
 {
     std::lock_guard<std::mutex> guard(mutex);
     min = min_angle;
     max = max_angle;
-    return true;
+    return ReturnValue_ok;
 }
 
-bool RpLidar::setScanLimits(double min, double max)
+ReturnValue RpLidar::setScanLimits(double min, double max)
 {
     std::lock_guard<std::mutex> guard(mutex);
     min_angle = min;
     max_angle = max;
-    return true;
+    return ReturnValue_ok;
 }
 
-bool RpLidar::getHorizontalResolution(double& step)
+ReturnValue RpLidar::getHorizontalResolution(double& step)
 {
     std::lock_guard<std::mutex> guard(mutex);
     step = resolution;
-    return true;
+    return ReturnValue_ok;
 }
 
-bool RpLidar::setHorizontalResolution(double step)
+ReturnValue RpLidar::setHorizontalResolution(double step)
 {
     std::lock_guard<std::mutex> guard(mutex);
     resolution = step;
-    return true;
+    return ReturnValue_ok;
 }
 
-bool RpLidar::getScanRate(double& rate)
+ReturnValue RpLidar::getScanRate(double& rate)
 {
     std::lock_guard<std::mutex> guard(mutex);
     yCWarning(RPLIDAR, "getScanRate not yet implemented");
-    return true;
+    return ReturnValue_ok;
 }
 
-bool RpLidar::setScanRate(double rate)
+ReturnValue RpLidar::setScanRate(double rate)
 {
     std::lock_guard<std::mutex> guard(mutex);
     yCWarning(RPLIDAR, "setScanRate not yet implemented");
-    return false;
+    return ReturnValue::return_code::return_value_error_not_implemented_by_device;
 }
 
 
-bool RpLidar::getRawData(yarp::sig::Vector &out, double* timestamp)
+ReturnValue RpLidar::getRawData(yarp::sig::Vector &out, double* timestamp)
 {
     std::lock_guard<std::mutex> guard(mutex);
     out = laser_data;
     device_status = yarp::dev::IRangefinder2D::DEVICE_OK_IN_USE;
-    return true;
+    return ReturnValue_ok;
 }
 
-bool RpLidar::getLaserMeasurement(std::vector<yarp::sig::LaserMeasurementData> &data, double* timestamp)
+ReturnValue RpLidar::getLaserMeasurement(std::vector<yarp::sig::LaserMeasurementData> &data, double* timestamp)
 {
     std::lock_guard<std::mutex> guard(mutex);
 #ifdef LASER_DEBUG
@@ -283,7 +285,11 @@ bool RpLidar::getLaserMeasurement(std::vector<yarp::sig::LaserMeasurementData> &
 #endif
     size_t size = laser_data.size();
     data.resize(size);
-    if (max_angle < min_angle) { yCError(RPLIDAR) << "getLaserMeasurement failed"; return false; }
+    if (max_angle < min_angle)
+    {
+        yCError(RPLIDAR) << "getLaserMeasurement failed";
+        return ReturnValue::return_code::return_value_error_method_failed;
+    }
     double laser_angle_of_view = max_angle - min_angle;
     for (size_t i = 0; i < size; i++)
     {
@@ -291,13 +297,13 @@ bool RpLidar::getLaserMeasurement(std::vector<yarp::sig::LaserMeasurementData> &
         data[i].set_polar(laser_data[i], angle);
     }
     device_status = yarp::dev::IRangefinder2D::DEVICE_OK_IN_USE;
-    return true;
+    return ReturnValue_ok;
 }
-bool RpLidar::getDeviceStatus(Device_status &status)
+ReturnValue RpLidar::getDeviceStatus(Device_status &status)
 {
     std::lock_guard<std::mutex> guard(mutex);
     status = device_status;
-    return true;
+    return ReturnValue_ok;
 }
 
 bool RpLidar::threadInit()
@@ -721,9 +727,9 @@ void RpLidar::threadRelease()
     return;
 }
 
-bool RpLidar::getDeviceInfo(std::string &device_info)
+ReturnValue RpLidar::getDeviceInfo(std::string &device_info)
 {
     std::lock_guard<std::mutex> guard(mutex);
     device_info = info;
-    return true;
+    return ReturnValue_ok;
 }
