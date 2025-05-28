@@ -22,12 +22,18 @@ if(NOT SKIP_rpLidar4)
 
   set(RPLIDAR_SDK_SRCS
     ${RPLIDAR_21_SDK_ROOT}/src/rplidar_driver.cpp
+    ${RPLIDAR_21_SDK_ROOT}/src/sl_lidarprotocol_codec.cpp
+    ${RPLIDAR_21_SDK_ROOT}/src/sl_async_transceiver.cpp
     ${RPLIDAR_21_SDK_ROOT}/src/sl_lidar_driver.cpp
     ${RPLIDAR_21_SDK_ROOT}/src/sl_serial_channel.cpp
     ${RPLIDAR_21_SDK_ROOT}/src/sl_tcp_channel.cpp
     ${RPLIDAR_21_SDK_ROOT}/src/sl_udp_channel.cpp
     ${RPLIDAR_21_SDK_ROOT}/src/sl_crc.cpp
 
+    ${RPLIDAR_21_SDK_ROOT}/src/dataunpacker/dataunpacker.cpp
+    ${RPLIDAR_21_SDK_ROOT}/src/dataunpacker/unpacker/handler_capsules.cpp
+    ${RPLIDAR_21_SDK_ROOT}/src/dataunpacker/unpacker/handler_hqnode.cpp
+    ${RPLIDAR_21_SDK_ROOT}/src/dataunpacker/unpacker/handler_normalnode.cpp
     ${RPLIDAR_21_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/net_serial.cpp
     ${RPLIDAR_21_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/net_socket.cpp
     ${RPLIDAR_21_SDK_ROOT}/src/arch/${RPLIDAR_ARCH_DIR}/timer.cpp
