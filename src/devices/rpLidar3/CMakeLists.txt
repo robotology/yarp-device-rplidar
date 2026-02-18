@@ -6,6 +6,7 @@ yarp_prepare_plugin(rpLidar3
   TYPE RpLidar3
   INCLUDE rpLidar3.h
   DEPENDS "TARGET YARP::YARP_math"
+  GENERATE_PARSER
   DEFAULT ON)
 
 if(NOT SKIP_rpLidar3)
@@ -44,6 +45,8 @@ if(NOT SKIP_rpLidar3)
     PRIVATE
       rpLidar3.h
       rpLidar3.cpp
+      RpLidar3_ParamsParser.h
+      RpLidar3_ParamsParser.cpp
   )
   target_compile_definitions(yarp_rpLidar3 PRIVATE _USE_MATH_DEFINES)
 
