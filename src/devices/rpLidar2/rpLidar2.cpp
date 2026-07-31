@@ -210,7 +210,6 @@ bool RpLidar2::threadInit()
 void RpLidar2::run()
 {
     updateLidarData();
-    m_mutex.unlock();
     return;
 }
 
@@ -254,10 +253,6 @@ bool RpLidar2::acquireDataFromHW()
             m_laser_data[i] = std::numeric_limits<double>::infinity();
         }
     }
-
-    //this lock protects m_laser_data. It is released at the end of the run(),
-    //after that the following methods are called: applyLimitsOnLaserData(), updateTimestamp()
-    m_mutex.lock();
 
     for (size_t i = 0; i < count; ++i)
     {
